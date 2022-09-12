@@ -25,15 +25,16 @@ export async function validateToken(req: Request, res: Response, next: NextFunct
         await checkUserExists(tokenData);
 
         res.locals.tokenData = tokenData;
+
         next();
     } catch {
         throwUnauthorizedError();
     }
 }
 
-async function checkUserExists(tokenData: jwt.JwtPayload) {
-    const data = tokenData;
-    const user = await userRepository.getById(data.userId);
+async function checkUserExists(tokenData:string | jwt.JwtPayload) {
+    const { userId } = tokenData as { userId: number };
+    const user = await userRepository.getById(userId);
 
     if (!user) {
         throw {

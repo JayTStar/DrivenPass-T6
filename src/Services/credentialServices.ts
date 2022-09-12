@@ -1,4 +1,3 @@
-import { Credentials } from "@prisma/client";
 import * as credentialRepository from "../Repositories/credentialRepositories.js";
 import * as dataUtils from "../Utils/dataUtils.js";
 
@@ -45,8 +44,6 @@ export async function getById(userId: number, id: number) {
     dataUtils.checkIfDataBelongsToUser(credential.userId, userId, "Credential");
 
     credential.password = dataUtils.decrypt(credential.password);
-
-    delete credential.userId;
 
     return credential;
 }
